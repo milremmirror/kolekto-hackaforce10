@@ -57,8 +57,8 @@ public class UpdateStock {
 
                     i++;
 
-                } catch (Exception e){
-    
+                } catch (Exception e) {
+
                     throw new EmptyStockException('There is not enought beer in stock for this sale', e);
                 }
             }
@@ -68,7 +68,6 @@ public class UpdateStock {
                 break;
             }
         }
-    
         repository.save(filteredProductions);
     }
 
@@ -93,8 +92,6 @@ public class UpdateStock {
             difference = production.Stock__c;
 
             production.Stock__c = 0;
-
-            repository.save(production);
 
             return difference;
         }

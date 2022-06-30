@@ -34,9 +34,9 @@ public with sharing class OpportunityTH extends TriggerHandler {
 
         updateProductStock();
 
-        //calculateOpportunityProductsAmountAndQuantity();
+        calculateOpportunityProductsAmountAndQuantity();
 
-        //calculateMediumPriceToProduct();
+        calculateMediumPriceToProduct();
 
     }
 
@@ -55,6 +55,7 @@ public with sharing class OpportunityTH extends TriggerHandler {
     public void calculateMediumPriceToProduct(){
         
         List<Painel_Entry__c> entries = repository.findAllPainelEntries();
+
         List<Product2> products = productRepository.findAllProducts();
 
         calculator.calculateTotalEarned(entries, products);
@@ -64,7 +65,6 @@ public with sharing class OpportunityTH extends TriggerHandler {
         
         List<Opportunity> filteredOpportunities = filter.byStage(filter.ByChangedStage(newOpportunities, oldOpportunities), 'Closed Won');
         
-        
         if (filteredOpportunities.size()>0){
 
             for (Opportunity opportunity : filteredOpportunities){
@@ -72,10 +72,9 @@ public with sharing class OpportunityTH extends TriggerHandler {
                 List<OpportunityLineItem> opportunityProducts = new List<OpportunityLineItem>();
                 
                 opportunityProducts = repository.findOpportunityLineItemByOpportunityId(opportunity.Id);
+
                 calculator.calculate(opportunityProducts);
             }
         }
     }
-
-
 }

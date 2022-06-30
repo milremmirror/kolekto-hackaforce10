@@ -8,6 +8,15 @@ public class OpportunityRepository extends AbstractRepository {
         return  [SELECT Id FROM Opportunity WHERE StageName = :stage];
     }
 
+    public List<Opportunity> findAll (){
+        return  [SELECT Id, Name FROM Opportunity];
+    }
+
+    public Opportunity findOpportunityById (String opportunityId){
+        return  [SELECT FIELDS(STANDARD) FROM Opportunity WHERE Id = :opportunityId];
+    }
+
+
     
     public List<OpportunityLineItem> findAllOpportunityProducts (){
         return [SELECT Name, Product2Id, Quantity, OpportunityId FROM OpportunityLineItem ];
@@ -19,9 +28,6 @@ public class OpportunityRepository extends AbstractRepository {
     }
     
     
-    public Opportunity findOpportunityById (String opportunityId){
-        return  [SELECT FIELDS(STANDARD) FROM Opportunity WHERE Id = :opportunityId];
-    }
     
     
 

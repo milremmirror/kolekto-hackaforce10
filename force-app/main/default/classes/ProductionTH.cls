@@ -8,6 +8,8 @@ public class ProductionTH extends TriggerHandler {
     Map<Id, Production__c> oldProductions;
     ProductionFilter filter;
     UpdateStock stock;
+    ProductionRepository repository;
+    UpdateProductFields productFields;
 
     
     public ProductionTH() {
@@ -19,21 +21,38 @@ public class ProductionTH extends TriggerHandler {
         this.oldProductions = oldProductions;
         this.filter = new ProductionFilter();
         this.stock = new UpdateStock();
-
+        this.repository = new ProductionRepository();
+        this.productFields = new UpdateProductFields();
     }
 
     override
     public void afterInsert() {
+
         updateStockByNewProduction();
+
+        updateProductStockFieldByProduction();
     }
 
+    override
+    public void afterUpdate() {
 
+        updateStockByNewProduction();
+
+        updateProductStockFieldByProduction();
+    }
 
     public void updateStockByNewProduction() {
     
         for (Production__c production : newProductions){
+
             stock.updateStockByNewProduction(production);
         }
     }
 
+    public void updateProductStockFieldByProduction(){
+
+        List<Production__c> productions = repository.findAll();
+
+        productFields.UpdateFieldsByProduction(productions);
+    }
 }
